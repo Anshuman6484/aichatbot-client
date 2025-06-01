@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { ThemeToogle } from './ThemeToggle'
 import { Link } from 'react-router-dom'
+import AuthButton from './AuthButton'
 
 function Ham({ open, setOpen, hamRef }) {
   const menuRef = useRef()
@@ -69,6 +70,7 @@ function Ham({ open, setOpen, hamRef }) {
                   Contacts
                 </Link>
               </li>
+              <AuthButton />
             </ul>
           </div>
         </div>

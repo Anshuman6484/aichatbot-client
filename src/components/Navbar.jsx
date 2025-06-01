@@ -5,20 +5,15 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu'
-import { Button } from '@/components/ui/button'
 import { ThemeToogle } from './ThemeToggle'
-import { BiLogIn } from 'react-icons/bi'
-import { BiLogOut } from 'react-icons/bi'
 import { MdMenu } from 'react-icons/md'
 import { useRef, useState } from 'react'
 import Ham from './Ham'
-import { useAuth } from '@/hooks/useAuth'
+import AuthButton from './AuthButton'
 
 function Navbar() {
   const [open, setOpen] = useState(false)
   const hamRef = useRef(null)
-
-  const { isLoggedIn, handleLogOut } = useAuth()
 
   return (
     <>
@@ -45,17 +40,9 @@ function Navbar() {
 
           <ThemeToogle className="hidden md:flex" />
 
-          {isLoggedIn ? (
-            <Button onClick={handleLogOut}>
-              <BiLogOut /> Log Out
-            </Button>
-          ) : (
-            <Link to="/login" className=''>
-              <Button>
-                Log In <BiLogIn />
-              </Button>
-            </Link>
-          )}
+          <div className="hidden md:flex">
+            <AuthButton />
+          </div>
           {/* Mobile */}
           <div
             className="md:hidden cursor-pointer"

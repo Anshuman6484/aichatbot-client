@@ -13,7 +13,6 @@ function AppLayout() {
         <AppSidebar />
         <main className="flex-1">
           <Toaster />
-          <SidebarTrigger className="m-2" />
           <Outlet />
         </main>
       </SidebarProvider>

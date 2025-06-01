@@ -11,13 +11,17 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Form, Link, useFetcher, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
+import { RxCross2 } from 'react-icons/rx'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 
 export function SignupForm({ className, ...props }) {
   const fetcher = useFetcher()
   const toastIdRef = useRef(null)
   const navigate = useNavigate()
+
+  const { setIsLoggedIn } = useAuth()
 
   // Detect start of form submission
   useEffect(() => {
@@ -35,6 +39,7 @@ export function SignupForm({ className, ...props }) {
       setTimeout(() => {
         if (fetcher.data.success) {
           toast.success(fetcher.data.success, { id: toastIdRef.current })
+          setIsLoggedIn(true)
           navigate('/')
         } else if (fetcher.data.error) {
           toast.error(fetcher.data.error, { id: toastIdRef.current })
@@ -46,7 +51,11 @@ export function SignupForm({ className, ...props }) {
 
   return (
     <div className={cn('flex flex-col gap-3', className)} {...props}>
-      <Card>
+      <Card className="relative">
+        <RxCross2
+          className="absolute top-4 right-4 cursor-pointer text-xl"
+          onClick={() => navigate(-2) || navigate('/')}
+        />
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome</CardTitle>
           <CardDescription>Signup with your account</CardDescription>

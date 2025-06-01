@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Form, Link, useFetcher, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
+import { RxCross2 } from 'react-icons/rx'
 import { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
@@ -50,7 +51,11 @@ export function LoginForm({ className, ...props }) {
 
   return (
     <div className={cn('flex flex-col gap-4', className)} {...props}>
-      <Card>
+      <Card className="relative">
+        <RxCross2
+          className="absolute top-4 right-4 cursor-pointer text-xl"
+          onClick={() => navigate(-1) || navigate('/')}
+        />
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
           <CardDescription>Login with your account</CardDescription>
