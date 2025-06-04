@@ -44,16 +44,14 @@ function Home() {
 
       {message && (
         <div
-          className={`my-10 w-full max-w-4xl space-y-4 ${
-            message ? 'pb-28' : ''
-          }`}
+          className={`my-4 max-w-lg sm:max-w-xl md:max-w-5xl space-y-2`}
         >
           <ReactMarkdown>{message}</ReactMarkdown>
           <div ref={msgEndRef} />
         </div>
       )}
 
-      <div className="w-full max-w-3xl mt-auto mb-6">
+      <div className="w-full max-w-lg sm:max-w-xl md:max-w-5xl m-2">
         <div className="relative">
           <Textarea
             placeholder="Ask me anything..."
@@ -69,7 +67,7 @@ function Home() {
           />
           <Button
             onClick={handleSend}
-            className={`absolute bottom-2 right-2 rounded-full p-2 ${
+            className={`absolute bottom-2 right-2 p-2 ${
               !query ? 'opacity-50 pointer-events-none' : ''
             }`}
             disabled={!query}

@@ -54,7 +54,7 @@ export function LoginForm({ className, ...props }) {
       <Card className="relative">
         <RxCross2
           className="absolute top-4 right-4 cursor-pointer text-xl"
-          onClick={() => navigate(-1) || navigate('/')}
+          onClick={() => navigate('/')}
         />
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>

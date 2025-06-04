@@ -54,7 +54,7 @@ export function SignupForm({ className, ...props }) {
       <Card className="relative">
         <RxCross2
           className="absolute top-4 right-4 cursor-pointer text-xl"
-          onClick={() => navigate(-2) || navigate('/')}
+          onClick={() => navigate('/')}
         />
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome</CardTitle>
