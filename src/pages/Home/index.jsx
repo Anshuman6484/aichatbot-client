@@ -9,49 +9,83 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 
 function Home() {
   const [query, setQuery] = useState('')
-  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+
   const msgEndRef = useRef(null)
 
   const handleSend = async () => {
-    setMessage('')
-    const id = toast.loading('Asking AI...')
     if (!query.trim()) return
+    const userMsg = {
+      role: 'user',
+      content: query,
+    }
+    const updatedMessages = [...messages, userMsg]
+
+    setQuery('')
+    setMessages(updatedMessages)
+    setIsLoading(true)
+
+    // const id = toast.loading('Asking AI...')
+
     try {
-      const res = await queryToAI(query)
-      setMessage(res)
-      // setQuery('')
-      toast.success('AI responded!', { id })
+      const res = await queryToAI(updatedMessages)
+      const reply = { role: 'assistant', content: res }
+      setMessages((prev) => [...prev, reply])
+      // toast.success('AI responded!', { id })
     } catch (error) {
       console.error('Error sending query:', error)
-      toast.error('Something went wrong!', { id })
+      toast.error('Something went wrong!')
+    } finally {
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    if (msgEndRef.current) {
+    if (messages.length > 0 && msgEndRef.current) {
       msgEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [message])
+  }, [messages])
 
   return (
-    <div className="relative bg-background text-foreground flex flex-col items-center py-10 px-4">
+    <div className="relative flex flex-col bg-background text-foreground">
       <SidebarTrigger className="absolute m-2 top-0 left-2" />
-      {!message && (
-        <h1 className="text-4xl text-center font-bold mb-10">
-          What can I help with?
-        </h1>
-      )}
 
-      {message && (
-        <div
-          className={`my-4 max-w-lg sm:max-w-xl md:max-w-5xl space-y-2`}
-        >
-          <ReactMarkdown>{message}</ReactMarkdown>
+      <div
+        className={`flex flex-col items-center px-4 pt-10 ${
+          messages.length !== 0 ? 'flex-grow' : 'justify-center flex'
+        }`}
+      >
+        {messages.length === 0 && (
+          <h1 className="text-4xl text-center font-bold my-4">
+            What can I help with?
+          </h1>
+        )}
+
+        <div className="w-full max-w-lg sm:max-w-xl md:max-w-4xl flex flex-col gap-3 mt-auto pb-4">
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`p-3 rounded-xl inline-block break-words ${
+                msg.role === 'user'
+                  ? 'bg-accent self-end text-right'
+                  : 'self-start text-left'
+              }`}
+            >
+              <ReactMarkdown>{msg.content}</ReactMarkdown>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="text-center text-sm animate-pulse">Thinking...</div>
+          )}
           <div ref={msgEndRef} />
         </div>
-      )}
+      </div>
 
-      <div className="w-full max-w-lg sm:max-w-xl md:max-w-5xl m-2">
+      {/* Input at center initially, bottom after message */}
+      <div
+        className={`w-full max-w-lg sm:max-w-xl md:max-w-2xl mx-auto px-4 py-4`}
+      >
         <div className="relative">
           <Textarea
             placeholder="Ask me anything..."

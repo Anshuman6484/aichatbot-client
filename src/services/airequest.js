@@ -1,8 +1,8 @@
 import axios from './axios'
 
-export const queryToAI = async (query) => {
+export const queryToAI = async (messages) => {
   try {
-    const response = await axios.post('/ai', { prompt: query })
+    const response = await axios.post('/ai', { messages })
     const output = response.data?.output
     return output
   } catch (err) {

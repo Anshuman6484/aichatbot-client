@@ -4,6 +4,7 @@ import Footer from './Footer'
 import { SidebarProvider, SidebarTrigger } from './ui/sidebar'
 import AppSidebar from './AppSidebar'
 import { Toaster } from '@/components/ui/sonner'
+import ScrollToTop from './ScrollToTop'
 
 function AppLayout() {
   return (
@@ -12,6 +13,7 @@ function AppLayout() {
       <SidebarProvider>
         <AppSidebar />
         <main className="flex-1">
+          <ScrollToTop />
           <Toaster />
           <Outlet />
         </main>
