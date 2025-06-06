@@ -5,8 +5,8 @@ export const action = async ({ request }) => {
     const formData = await request.formData()
     const email = formData.get('email')
     const password = formData.get('password')
-    await login(email, password)
-    return { success: 'Login Successful!' }
+    const response = await login(email, password)
+    return { success: 'Login Successful!', response }
   } catch (err) {
     return { error: 'Login Failed!' }
   }

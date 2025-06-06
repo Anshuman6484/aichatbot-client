@@ -38,7 +38,13 @@ export function SignupForm({ className, ...props }) {
 
       setTimeout(() => {
         if (fetcher.data.success) {
-          toast.success(fetcher.data.success, { id: toastIdRef.current })
+          const { response, success } = fetcher.data
+          console.log(response)
+
+          localStorage.setItem('conversationId', response.conversationId)
+          localStorage.setItem('userId', response.user._id)
+
+          toast.success(success, { id: toastIdRef.current })
           setIsLoggedIn(true)
           navigate('/')
         } else if (fetcher.data.error) {
