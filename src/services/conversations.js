@@ -27,8 +27,8 @@ export const createConversation = async (userId) => {
   }
 }
 
-export const updateConversationTitle = async (conversationId, title) => {
-  const res = await axios.patch(`/conversations/rename/${conversationId}`, { title })
+export const updateConversationTitle = async (conversationId, newTitle) => {
+  const res = await axios.patch(`/conversations/rename/${conversationId}`, { newTitle })
   return res.data
 }
 
