@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom'
+import { SidebarProvider, SidebarTrigger } from './ui/sidebar'
+import { Toaster } from '@/components/ui/sonner'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import { SidebarProvider, SidebarTrigger } from './ui/sidebar'
 import AppSidebar from './AppSidebar'
-import { Toaster } from '@/components/ui/sonner'
 import ScrollToTop from './ScrollToTop'
 
 function AppLayout() {
@@ -13,7 +13,7 @@ function AppLayout() {
       <div className="flex flex-1">
         <SidebarProvider>
           <AppSidebar />
-          <SidebarTrigger className='fixed top-3 left-3 z-10' />
+          <SidebarTrigger className='fixed top-2 left-2 z-10' />
         </SidebarProvider>
         <main className="flex-1">
           <ScrollToTop />

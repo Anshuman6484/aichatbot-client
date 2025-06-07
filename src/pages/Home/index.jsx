@@ -5,18 +5,18 @@ import { queryToAI } from '@/services/airequest.js'
 import { toast } from 'sonner'
 import ReactMarkdown from 'react-markdown'
 import { FaArrowUp } from 'react-icons/fa'
-import { SidebarTrigger } from '@/components/ui/sidebar'
 import { useAuth } from '@/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
+import { useChats } from '@/hooks/useChats'
 
 function Home() {
   const [query, setQuery] = useState('')
-  const [messages, setMessages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   const msgEndRef = useRef(null)
 
   const { isLoggedIn } = useAuth()
+  const { messages, setMessages } = useChats()
   const navigate = useNavigate()
 
   const handleSend = async () => {

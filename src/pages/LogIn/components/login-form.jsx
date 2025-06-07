@@ -21,7 +21,7 @@ export function LoginForm({ className, ...props }) {
   const toastIdRef = useRef(null)
   const navigate = useNavigate()
 
-  const { setIsLoggedIn } = useAuth()
+  const { handleLogin } = useAuth()
 
   // Detect start of form submission
   useEffect(() => {
@@ -40,12 +40,12 @@ export function LoginForm({ className, ...props }) {
         if (fetcher.data.success) {
           const { response, success } = fetcher.data
           console.log(response)
-
-          localStorage.setItem('conversationId', response.conversationId)
-          localStorage.setItem('userId', response.user._id)
-
+          handleLogin(
+            response.token,
+            response.user._id,
+            response.conversationId
+          )
           toast.success(success, { id: toastIdRef.current })
-          setIsLoggedIn(true)
           navigate('/')
         } else if (fetcher.data.error) {
           toast.error(fetcher.data.error, { id: toastIdRef.current })

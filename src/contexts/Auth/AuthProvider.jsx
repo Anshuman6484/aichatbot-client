@@ -1,23 +1,66 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import { toast } from 'sonner'
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem('token') !== null
-  )
+  const [token, setToken] = useState(null)
+  const [userId, setUserId] = useState(null)
+  const [conversationId, setConversationId] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  // load data from local storage on mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    const storedUserId = localStorage.getItem('userId')
+    const storedConversationId = localStorage.getItem('conversationId')
+    if (storedToken && storedUserId && storedConversationId) {
+      setToken(storedToken)
+      setUserId(storedUserId)
+      setConversationId(storedConversationId)
+      setIsLoggedIn(true)
+    }
+  }, [])
+
+  const handleLogin = (token, userId, conversationId) => {
+    localStorage.setItem('token', token)
+    localStorage.setItem('userId', userId)
+    localStorage.setItem('conversationId', conversationId)
+    setToken(token)
+    setUserId(userId)
+    setConversationId(conversationId)
+    setIsLoggedIn(true)
+  }
 
   const handleLogOut = () => {
     const id = toast.loading('Logging out...')
     setTimeout(() => {
-      localStorage.removeItem('token')
+      setToken(null)
+      setUserId(null)
+      setConversationId(null)
       setIsLoggedIn(false)
+
+      localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+      localStorage.removeItem('conversationId')
       toast.success('Log out successfull!', { id })
     }, 2000)
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, handleLogOut }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        token,
+        userId,
+        conversationId,
+        setToken,
+        setUserId,
+        setConversationId,
+        setIsLoggedIn,
+        handleLogin,
+        handleLogOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

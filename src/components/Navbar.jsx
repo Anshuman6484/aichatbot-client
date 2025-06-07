@@ -19,7 +19,7 @@ function Navbar() {
     <>
       <nav className="fixed w-full px-4 py-2 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold">
+          <Link to="/" className="text-2xl font-bold ml-15">
             AI <span className="text-primary">CHATBOT</span>
           </Link>
 

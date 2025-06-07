@@ -1,12 +1,4 @@
-import {
-  Calendar,
-  Home,
-  Inbox,
-  Search,
-  Settings,
-  User2,
-  ChevronUp,
-} from 'lucide-react'
+import { Pencil, Plus, User2 } from 'lucide-react'
 
 import {
   Sidebar,
@@ -19,60 +11,119 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { useEffect, useState } from 'react'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu'
-
-// Menu items.
-const items = [
-  {
-    title: 'Home',
-    url: '#',
-    icon: Home,
-  },
-  {
-    title: 'Inbox',
-    url: '#',
-    icon: Inbox,
-  },
-  {
-    title: 'Calendar',
-    url: '#',
-    icon: Calendar,
-  },
-  {
-    title: 'Search',
-    url: '#',
-    icon: Search,
-  },
-  {
-    title: 'Settings',
-    url: '#',
-    icon: Settings,
-  },
-]
+  createConversation,
+  getAllConversations,
+  getConversationChats,
+  updateConversationTitle,
+} from '@/services/conversations'
+import { useChats } from '@/hooks/useChats'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function AppSidebar() {
+  const [chats, setChats] = useState([])
+  const [activeId, setActiveId] = useState(
+    localStorage.getItem('conversationId')
+  )
+
+  const {userId, setConversationId} = useAuth()
+  const { setMessages } = useChats()
+
+  const handleChats = async (item) => {
+    const conversationId = item._id
+    localStorage.setItem('conversationId', conversationId)
+    setConversationId(conversationId)
+    setActiveId(conversationId)
+
+    try {
+      const res = await getConversationChats(conversationId)
+      setMessages(res.messages)
+    } catch (err) {
+      console.log('error fetching chat messages', err)
+      if (err.response.status === 404) {
+        setMessages([])
+      }
+    }
+  }
+
+  const handleNewChat = async () => {
+    try {
+      const res = await createConversation(userId)
+      const newChat = { title: res.title, _id: res.conversationId }
+      setChats((prev) => [newChat, ...prev])
+      handleChats(newChat)
+      localStorage.setItem('conversationId', res.conversationId)
+      setConversationId(res.conversationId)
+      setActiveId(res.conversationId)
+    } catch (err) {
+      console.log('error creating new chat', err)
+    }
+  }
+
+  const handleRename = async () => {
+    try {
+      await updateConversationTitle(activeId, 'New Title')
+      const res = await getConversationChats(activeId)
+      setMessages(res.messages)
+    } catch (err) {
+      console.log('error renaming chat', err)
+    }
+  }
+
+  useEffect(() => {
+    if (!userId) return
+    const fetchChats = async () => {
+      try {
+        const res = await getAllConversations(userId)
+        setChats(res.conversations)
+      } catch (err) {
+        console.log('error fetching chats', err)
+      }
+    }
+    fetchChats()
+  }, [userId])
+
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="flex items-center justify-between mt-10">
+            <span className="text-primary font-semibold text-lg">
+              Chat History
+            </span>
+            <button onClick={handleNewChat} title="New Chat">
+              <Plus className="w-4 h-4 text-muted-foreground hover:text-foreground transition cursor-pointer" />
+            </button>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+              {chats.length === 0 ? (
+                <div className="text-sm text-muted-foreground px-3 py-2">
+                  No chats yet
+                </div>
+              ) : (
+                chats.map((item) => (
+                  <SidebarMenuItem key={item._id}>
+                    <SidebarMenuButton
+                      onClick={() => handleChats(item)}
+                      className={`truncate flex cursor-pointer justify-between items-center ${
+                        item._id === activeId
+                          ? 'bg-accent text-accent-foreground font-semibold border-l-2 border-primary'
+                          : ''
+                      }`}
+                    >
                       <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <button
+                        onClick={handleRename}
+                        className="ml-2 text-muted-foreground hover:text-foreground text-sm cursor-pointer"
+                      >
+                        <Pencil className="w-3 h-3" />
+                      </button>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -80,28 +131,9 @@ export default function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SidebarMenuButton>
+              <User2 /> Username
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
