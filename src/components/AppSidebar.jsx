@@ -23,14 +23,13 @@ import { useAuth } from '@/hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 
 export default function AppSidebar() {
-  const [chats, setChats] = useState([])
   const [editingChat, setEditingChat] = useState(null) // { id, title }
   const [activeId, setActiveId] = useState(
     localStorage.getItem('conversationId')
   )
 
   const { userId, setConversationId, isLoggedIn } = useAuth()
-  const { setMessages } = useChats()
+  const { setMessages, chats, setChats } = useChats()
 
   const navigate = useNavigate()
 

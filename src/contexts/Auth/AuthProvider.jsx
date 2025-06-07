@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import { toast } from 'sonner'
+import { useChats } from '@/hooks/useChats'
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null)
   const [userId, setUserId] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const { setMessages, setChats } = useChats()
 
   // load data from local storage on mount
   useEffect(() => {
@@ -38,6 +41,8 @@ export const AuthProvider = ({ children }) => {
       setUserId(null)
       setConversationId(null)
       setIsLoggedIn(false)
+      setMessages([])
+      setChats([])
 
       localStorage.removeItem('token')
       localStorage.removeItem('userId')

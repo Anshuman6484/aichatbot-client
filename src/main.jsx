@@ -9,11 +9,11 @@ import { ChatProvider } from './contexts/Chats/ChatProvider'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
-      <AuthProvider>
-        <ChatProvider>
+      <ChatProvider>
+        <AuthProvider>
           <App />
-        </ChatProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ChatProvider>
     </ThemeProvider>
   </StrictMode>
 )
