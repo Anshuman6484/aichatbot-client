@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState(null)
   const [conversationId, setConversationId] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [user, setUser] = useState(null)
 
   const { setMessages, setChats } = useChats()
 
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
-  const handleLogin = (token, userId, conversationId) => {
+  const handleLogin = (token, userId, conversationId, userName) => {
     localStorage.setItem('token', token)
     localStorage.setItem('userId', userId)
     localStorage.setItem('conversationId', conversationId)
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }) => {
     setUserId(userId)
     setConversationId(conversationId)
     setIsLoggedIn(true)
+    setUser(userName)
   }
 
   const handleLogOut = () => {
@@ -58,6 +60,8 @@ export const AuthProvider = ({ children }) => {
         token,
         userId,
         conversationId,
+        user,
+        setUser,
         setToken,
         setUserId,
         setConversationId,

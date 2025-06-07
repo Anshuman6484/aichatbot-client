@@ -28,7 +28,7 @@ export default function AppSidebar() {
     localStorage.getItem('conversationId')
   )
 
-  const { userId, setConversationId, isLoggedIn } = useAuth()
+  const { userId, setConversationId, isLoggedIn, user } = useAuth()
   const { setMessages, chats, setChats } = useChats()
 
   const navigate = useNavigate()
@@ -199,7 +199,7 @@ export default function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton>
-              <User2 /> Username
+              <User2 /> {user || 'Username'}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -43,7 +43,8 @@ export function SignupForm({ className, ...props }) {
           handleLogin(
             response.token,
             response.user._id,
-            response.conversationId
+            response.conversationId,
+            response.user.name
           )
           toast.success(success, { id: toastIdRef.current })
           navigate('/')
