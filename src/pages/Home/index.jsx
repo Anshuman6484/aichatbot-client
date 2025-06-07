@@ -51,9 +51,7 @@ function Home() {
   }, [messages])
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-background text-foreground">
-      <SidebarTrigger className="absolute m-2 top-0 left-2" />
-
+    <div className="flex flex-col h-full bg-background text-foreground pt-10">
       <div
         className={`flex flex-col flex-grow px-4 ${
           messages.length === 0
@@ -75,7 +73,7 @@ function Home() {
                 className={`p-3 rounded-xl inline-block break-words ${
                   msg.role === 'user'
                     ? 'bg-primary text-primary-foreground self-end text-right'
-                    : 'text-accent-foreground self-start text-left'
+                    : 'self-start text-left'
                 }`}
               >
                 <ReactMarkdown>{msg.content}</ReactMarkdown>

@@ -17,7 +17,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="w-full px-4 py-2 border-b border-border bg-background">
+      <nav className="fixed w-full px-4 py-2 border-b border-border bg-background">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link to="/" className="text-xl font-bold">
             AI <span className="text-primary">CHATBOT</span>
