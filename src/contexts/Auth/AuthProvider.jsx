@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(false)
       setMessages([])
       setChats([])
+      setUser(null)
 
       localStorage.removeItem('token')
       localStorage.removeItem('userId')

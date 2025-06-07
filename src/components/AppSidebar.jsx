@@ -97,7 +97,7 @@ export default function AppSidebar() {
       }
     }
     fetchChats()
-  }, [userId])
+  }, [userId, setChats])
 
   return (
     <Sidebar>
