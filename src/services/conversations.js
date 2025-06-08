@@ -28,7 +28,13 @@ export const createConversation = async (userId) => {
 }
 
 export const updateConversationTitle = async (conversationId, newTitle) => {
-  const res = await axios.patch(`/conversations/rename/${conversationId}`, { newTitle })
+  const res = await axios.patch(`/conversations/rename/${conversationId}`, {
+    newTitle,
+  })
   return res.data
 }
 
+export const deleteConversation = async (conversationId) => {
+  const res = await axios.delete(`/conversations/remove/${conversationId}`)
+  return res.data
+}

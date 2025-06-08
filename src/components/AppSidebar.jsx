@@ -1,4 +1,4 @@
-import { X, Check, Pencil, Plus, User2 } from 'lucide-react'
+import { X, Check, Pencil, Plus, User2, Trash } from 'lucide-react'
 
 import {
   Sidebar,
@@ -10,10 +10,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { useEffect, useState } from 'react'
 import {
   createConversation,
+  deleteConversation,
   getAllConversations,
   getConversationChats,
   updateConversationTitle,
@@ -30,6 +32,7 @@ export default function AppSidebar() {
 
   const { userId, setConversationId, isLoggedIn, user } = useAuth()
   const { setMessages, chats, setChats } = useChats()
+  const { toggleSidebar } = useSidebar()
 
   const navigate = useNavigate()
 
@@ -86,6 +89,30 @@ export default function AppSidebar() {
     }
   }
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteConversation(id)
+
+      const remainingChats = chats.filter((chat) => chat._id !== id)
+      setChats(remainingChats)
+
+      if (remainingChats.length > 0) {
+        const next = remainingChats[0]
+        setActiveId(next._id)
+        setConversationId(next._id)
+        localStorage.setItem('conversationId', next._id)
+        handleChats(next)
+      } else {
+        setActiveId(null)
+        setConversationId(null)
+        localStorage.removeItem('conversationId')
+        setMessages([])
+      }
+    } catch (err) {
+      console.log('error deleting chat', err)
+    }
+  }
+
   useEffect(() => {
     if (!userId) return
     const fetchChats = async () => {
@@ -99,6 +126,10 @@ export default function AppSidebar() {
     fetchChats()
   }, [userId, setChats])
 
+  useEffect(() => {
+    toggleSidebar()
+  }, [activeId])
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -108,9 +139,14 @@ export default function AppSidebar() {
               Chat History
             </span>
             <button
-              onClick={() =>
-                isLoggedIn ? handleNewChat() : navigate('/login')
-              }
+              onClick={() => {
+                if (isLoggedIn) {
+                  handleNewChat()
+                  // toggleSidebar()
+                } else {
+                  navigate('/login')
+                }
+              }}
               title="New Chat"
             >
               <Plus className="w-4 h-4 text-muted-foreground hover:text-foreground transition cursor-pointer" />
@@ -176,16 +212,31 @@ export default function AppSidebar() {
                           </button>
                         </div>
                       ) : (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleChats(item) // select the chat
-                            setEditingChat({ id: item._id, title: item.title })
-                          }}
-                          className="ml-2 text-muted-foreground hover:text-foreground cursor-pointer"
-                        >
-                          <Pencil className="w-3 h-3" />
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleChats(item) // select the chat
+                              setEditingChat({
+                                id: item._id,
+                                title: item.title,
+                              })
+                            }}
+                            className="ml-2 text-muted-foreground hover:text-foreground cursor-pointer"
+                            title="Rename Chat"
+                          >
+                            <Pencil className="w-3 h-3" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDelete(item._id)
+                            }}
+                            className="ml-2 text-muted-foreground hover:text-foreground cursor-pointer"
+                          >
+                            <Trash className="w-3 h-3" />
+                          </button>
+                        </div>
                       )}
                     </SidebarMenuItem>
                   )

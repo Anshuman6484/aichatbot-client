@@ -15,7 +15,7 @@ function Home() {
 
   const msgEndRef = useRef(null)
 
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, conversationId } = useAuth()
   const { messages, setMessages } = useChats()
   const navigate = useNavigate()
 
@@ -60,13 +60,35 @@ function Home() {
         }`}
       >
         {messages.length === 0 && (
-          <h1 className="text-4xl text-center font-bold mb-6">
-            What can I help with?
-          </h1>
+          <div className="animate-fadeIn">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl text-center font-extrabold mb-4 sm:mb-6 leading-tight">
+              Welcome to <br />
+              <span className="text-primary">AI CHATBOT</span>
+            </h1>
+            <div className="flex flex-col gap-2 p-2">
+              <p className="text-center text-muted-foreground text-sm sm:text-base md:text-lg max-w-md mx-auto">
+                Your Personal AI Assistant
+              </p>
+              <p className="text-center text-muted-foreground text-sm sm:text-base md:text-lg max-w-md mx-auto">
+                Chat with your AI assistant and get answers to your questions.
+              </p>
+              {!isLoggedIn && (
+                <p className="text-center font-bold text-destructive text-sm sm:text-base md:text-lg max-w-md mx-auto">
+                  Please login to continue.
+                </p>
+              )}
+              {isLoggedIn && !conversationId && (
+                <p className="text-center font-bold text-destructive text-sm sm:text-base md:text-lg max-w-md mx-auto">
+                  All your conversations are deleted. <br /> Please create a new
+                  conversation.
+                </p>
+              )}
+            </div>
+          </div>
         )}
 
         {messages.length > 0 && (
-          <div className="w-full max-w-4xl flex flex-col gap-3 pb-4">
+          <div className="w-full max-w-4xl flex flex-col gap-5 pt-5">
             {messages.map((msg, idx) => (
               <div
                 key={idx}
@@ -80,7 +102,7 @@ function Home() {
               </div>
             ))}
             {isLoading && (
-              <div className="flex space-x-2 items-center justify-center">
+              <div className="flex space-x-5 items-center justify-center">
                 {[0, 1, 2].map((i) => (
                   <span
                     key={i}
@@ -93,9 +115,11 @@ function Home() {
             <div ref={msgEndRef} />
           </div>
         )}
+      </div>
 
-        {/* Input box – shared between both states */}
-        <div className="relative w-full max-w-xl">
+      {/* Input box */}
+      <div className="w-full max-w-2xl mx-auto px-4 pb-4 ">
+        <div className="relative w-full">
           <Textarea
             placeholder="Ask me anything..."
             className="w-full pr-14 resize-none max-h-40 overflow-y-auto"
