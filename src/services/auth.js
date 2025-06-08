@@ -23,3 +23,26 @@ export const signup = async (name, email, password) => {
     throw err
   }
 }
+
+export const forgotPassword = async (email) => {
+  try {
+    const response = await axios.post('/auth/forgotPassword', { email })
+    return response.data
+  } catch (err) {
+    console.error('Error sending email')
+    throw err
+  }
+}
+
+export const resetPassword = async (resetToken, newPassword) => {
+  try {
+    const response = await axios.post('/auth/resetPassword', {
+      resetToken,
+      newPassword,
+    })
+    return response.data
+  } catch (err) {
+    console.error('Error resetting password')
+    throw err
+  }
+}

@@ -6,6 +6,10 @@ import LogIn from '@/pages/LogIn'
 import { action as loginAction } from '@/pages/LogIn/functions/loginAction'
 import SignUp from '@/pages/SignUp'
 import { action as signupAction } from '@/pages/SignUp/functions/signupAction'
+import ForgotPassword from './pages/ForgotPassword'
+import { action as forgotAction } from './pages/ForgotPassword/functions/forgotAction'
+import ResetPassword from './pages/ResetPassword'
+import { action as resetAction } from './pages/ResetPassword/functions/resetAction'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +30,16 @@ const router = createBrowserRouter([
         path: 'signup',
         element: <SignUp />,
         action: signupAction,
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />,
+        action: forgotAction,
+      },
+      {
+        path: '/reset-password/:resetToken',
+        element: <ResetPassword />,
+        action: resetAction,
       },
     ],
   },
