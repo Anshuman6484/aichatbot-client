@@ -17,10 +17,12 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem('token')
     const storedUserId = localStorage.getItem('userId')
     const storedConversationId = localStorage.getItem('conversationId')
+    const storedUser = localStorage.getItem('userName')
     if (storedToken && storedUserId && storedConversationId) {
       setToken(storedToken)
       setUserId(storedUserId)
       setConversationId(storedConversationId)
+      setUser(storedUser)
       setIsLoggedIn(true)
     }
   }, [])
@@ -29,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', token)
     localStorage.setItem('userId', userId)
     localStorage.setItem('conversationId', conversationId)
+    localStorage.setItem('userName', userName)
     setToken(token)
     setUserId(userId)
     setConversationId(conversationId)

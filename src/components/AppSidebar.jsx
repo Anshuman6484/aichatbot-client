@@ -10,7 +10,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from '@/components/ui/sidebar'
 import { useEffect, useState } from 'react'
 import {
@@ -33,7 +32,6 @@ export default function AppSidebar() {
   const { userId, setConversationId, isLoggedIn, user, conversationId } =
     useAuth()
   const { setMessages, chats, setChats } = useChats()
-  const { toggleSidebar } = useSidebar()
 
   const navigate = useNavigate()
 
@@ -126,10 +124,6 @@ export default function AppSidebar() {
     }
     fetchChats()
   }, [userId, setChats])
-
-  useEffect(() => {
-    toggleSidebar()
-  }, [activeId])
 
   useEffect(() => {
     if (conversationId) setActiveId(conversationId)

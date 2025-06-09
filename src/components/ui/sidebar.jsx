@@ -42,7 +42,7 @@ function useSidebar() {
 }
 
 function SidebarProvider({
-  defaultOpen = true,
+  defaultOpen = false,
   open: openProp,
   onOpenChange: setOpenProp,
   className,
@@ -78,7 +78,7 @@ function SidebarProvider({
   }, [isMobile, setOpen, setOpenMobile])
 
   React.useEffect(() => {
-    const shouldDisableScroll = openMobile || _open
+    const shouldDisableScroll = openMobile
 
     if (shouldDisableScroll) {
       document.body.style.overflow = 'hidden'
@@ -93,7 +93,7 @@ function SidebarProvider({
       document.body.style.overflow = ''
       document.documentElement.style.overflow = ''
     }
-  }, [openMobile, _open])
+  }, [openMobile])
 
   // Adds a keyboard shortcut to toggle the sidebar.
   React.useEffect(() => {
