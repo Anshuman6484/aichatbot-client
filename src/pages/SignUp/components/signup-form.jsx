@@ -114,7 +114,7 @@ export function SignupForm({ className, ...props }) {
                     <Button
                       type="button"
                       size="icon"
-                      variant="ghost"
+                      variant="link"
                       className="absolute right-2 top-1/2 -translate-y-1/2"
                       onClick={() => setShowPassword((prev) => !prev)}
                       tabIndex={-1}
