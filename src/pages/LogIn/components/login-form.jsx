@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -17,6 +19,8 @@ import { toast } from 'sonner'
 import { useAuth } from '@/hooks/useAuth'
 
 export function LoginForm({ className, ...props }) {
+  const [showPassword, setShowPassword] = useState(false)
+
   const fetcher = useFetcher()
   const toastIdRef = useRef(null)
   const navigate = useNavigate()
@@ -96,12 +100,28 @@ export function LoginForm({ className, ...props }) {
                       Forgot your password?
                     </Link>
                   </div>
-                  <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                    />
+                    <Button
+                      type="button"
+                      size="icon"
+                      variant="ghost"
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4 h-4" />
+                      ) : (
+                        <Eye className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
                 <Button type="submit" className="w-full">
                   Login
