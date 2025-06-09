@@ -39,6 +39,7 @@ function Home() {
     } catch (err) {
       console.error('Error sending query:', err)
       toast.error(err.response?.data?.error || err.message)
+      setMessages((prev) => prev.slice(0, -1))
     } finally {
       setIsLoading(false)
     }

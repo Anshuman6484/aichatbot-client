@@ -30,7 +30,8 @@ export default function AppSidebar() {
     localStorage.getItem('conversationId')
   )
 
-  const { userId, setConversationId, isLoggedIn, user } = useAuth()
+  const { userId, setConversationId, isLoggedIn, user, conversationId } =
+    useAuth()
   const { setMessages, chats, setChats } = useChats()
   const { toggleSidebar } = useSidebar()
 
@@ -129,6 +130,10 @@ export default function AppSidebar() {
   useEffect(() => {
     toggleSidebar()
   }, [activeId])
+
+  useEffect(() => {
+    if (conversationId) setActiveId(conversationId)
+  }, [conversationId])
 
   return (
     <Sidebar>
