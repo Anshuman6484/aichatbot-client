@@ -53,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
       localStorage.removeItem('conversationId')
+      localStorage.removeItem('userName')
       toast.success('Log out successfull!', { id })
     }, 2000)
   }
